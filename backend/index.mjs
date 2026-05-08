@@ -3,10 +3,7 @@ dotenv.config();
 import sequelize from "./config/db.mjs";  
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.mjs";
-import adminRoutes from "./routes/adminRoutes.mjs"
-                                                                                                                        
-import bugRoutes from './routes/BugRoutes.mjs';                                                                                                                       
+import authRoutes from "./routes/authRoutes.mjs";                                                                                                             
 const app = express();
 
 // app.use(cors());
@@ -20,8 +17,6 @@ app.use(express.json());
 // app.use("/admin", adminRoutes);
 // app.use("/staff", staffRoutes);
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/api/admin", adminRoutes);
 
 
 app.get("/", (req, res) => {
