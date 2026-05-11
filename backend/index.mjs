@@ -3,7 +3,12 @@ dotenv.config();
 import sequelize from "./config/db.mjs";  
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes.mjs";                                                                                                             
+import authRoutes from "./routes/authRoutes.mjs";  
+import categoryRoutes from "./routes/categoryRoutes.mjs";
+import productRoutes from "./routes/productRoutes.mjs";
+import brandRoutes from "./routes/brandRoutes.mjs";
+import inventoryRoutes from "./routes/inventoryRoutes.mjs";
+
 const app = express();
 
 // app.use(cors());
@@ -12,11 +17,16 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 // routes use
 // app.use("/admin", adminRoutes);
 // app.use("/staff", staffRoutes);
 app.use("/auth", authRoutes);
+app.use("/category", categoryRoutes);
+app.use("/product", productRoutes);
+app.use("/brands", brandRoutes);
+app.use("/inventories", inventoryRoutes);
 
 
 app.get("/", (req, res) => {

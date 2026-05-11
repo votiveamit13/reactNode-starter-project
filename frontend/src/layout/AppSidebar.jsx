@@ -17,22 +17,49 @@ const AppSidebar = () => {
 
   const isActive = useCallback((path) => path === pathname, [pathname]);
 
-  const dynamicNavItems = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: <GridIcon />,
-    },
-    ...(Array.isArray(modules) ? modules : []).map((m) => ({
-      name: m.name,
-      icon: <GridIcon />,
-      subItems:
-        m.children && m.children.length > 0
-          ? m.children.map((c) => ({ name: c.name, path: c.route }))
-          : undefined,
-      path: !m.children || m.children.length === 0 ? m.route : undefined,
-    })),
-  ];
+const dynamicNavItems = [
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    icon: <GridIcon />,
+  },
+
+  {
+    name: "Product Management",
+    icon: <GridIcon />,
+    subItems: [
+      {
+        name: "Category",
+        path: "/product-management/category",
+      },
+      {
+        name: "Products",
+        path: "/product-management/products",
+      },
+      {
+        name: "Brands",
+        path: "/product-management/brands",
+      },
+      {
+        name: "Inventory",
+        path: "/product-management/inventory",
+      },
+    ],
+  },
+
+  ...(Array.isArray(modules) ? modules : []).map((m) => ({
+    name: m.name,
+    icon: <GridIcon />,
+    subItems:
+      m.children && m.children.length > 0
+        ? m.children.map((c) => ({
+            name: c.name,
+            path: c.route,
+          }))
+        : undefined,
+    path: !m.children || m.children.length === 0 ? m.route : undefined,
+  })),
+];
 
   useEffect(() => {
     let matched = false;
@@ -65,7 +92,7 @@ const AppSidebar = () => {
   const renderMenuItems = (navItems, menuType) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
-        <li key={nav.name}>
+        <li key={`${nav.name}-${index}`}>
           {nav.subItems ? (
             <>
               <button

@@ -95,6 +95,7 @@ export default function SalesStatsCards() {
   //     console.error(err);
   //   }
   // };
+
   const fetchAnalysis = async (customStart, customEnd) => {
   try {
     let startDate, endDate;
@@ -146,15 +147,15 @@ export default function SalesStatsCards() {
   }
 };
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetchKpi();
-  }, []);
+  }, []); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (filter !== "custom") {
       fetchAnalysis();
     }
-  }, [filter]);
+  }, [filter]); */
 
   if (!data) return <div>Loading...</div>;
 
