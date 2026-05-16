@@ -22,7 +22,6 @@ export default function ProductsPage() {
     brand_id: "",
     name: "",
     price: "",
-    qty: "",
     status: "active",
   });
 
@@ -292,15 +291,6 @@ const fetchBrands = async () => {
           />
 
 
-          <input
-            type="number"
-            name="qty"
-            placeholder="Quantity"
-            value={formData.qty}
-            onChange={handleChange}
-            className="rounded border p-3"
-          />
-
 
           <input
             type="file"
@@ -415,8 +405,8 @@ const fetchBrands = async () => {
                   ₹ {product.price}
                 </td>
 
-                <td className="p-3">
-                  {product.qty}
+                <td className="p-3"> 
+                  {product.qty ?? 0}
                 </td>
 
                 <td className="flex gap-2 p-3">

@@ -1,5 +1,4 @@
-// controllers/authController.mjs
-
+/*
 import { User } from "../models/index.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -79,4 +78,117 @@ export const login = async (req, res) => {
       error: err.message,
     });
   }
+}; */
+
+
+import { User } from "../models/index.mjs";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+export const login = async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      where: { email },
+    });
+
+    // USER NOT FOUND
+    if (!user) {
+
+      return res.status(404).json({
+        msg: "User not found",
+      });
+
+    }
+
+    // ACCOUNT DISABLED
+    if (!user.is_active) {
+
+      return res.status(403).json({
+        msg: "Your account has been deactivated",
+      });
+
+    }
+
+    // PASSWORD NOT SET
+    if (!user.password) {
+
+      return res.status(400).json({
+        msg: "Password not set",
+      });
+
+    }
+
+    // PASSWORD CHECK
+    const match = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!match) {
+
+      return res.status(400).json({
+        msg: "Invalid password",
+      });
+
+    }
+
+    /*
+      ROLE IDs EXAMPLE
+
+      1 = Admin
+      2 = Staff
+      3 = App User
+
+    */
+
+    // GENERATE TOKEN
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role_id: user.role_id,
+      },
+      process.env.JWT_SECRET || "secret",
+      {
+        expiresIn: "10h",
+      }
+    );
+
+    // SAFE USER DATA
+    const safeUser = {
+
+      id: user.id,
+
+      name: user.name,
+
+      email: user.email,
+
+      role_id: user.role_id,
+
+    };
+
+    // RESPONSE
+    res.json({
+
+      token,
+
+      user: safeUser,
+
+    });
+
+  } catch (err) {
+
+    console.log("LOGIN ERROR:", err);
+
+    res.status(500).json({
+      msg: "Server error",
+      error: err.message,
+    });
+
+  }
+
 };

@@ -7,21 +7,31 @@ export const getProducts = async (req, res) => {
 
   try {
 
-    const products = await sequelize.query(
-      `SELECT
-      p.*,
-      c.name AS category_name,
-      b.name AS brand_name
-      FROM products p
-      LEFT JOIN categories c
-      ON p.category_id = c.id
-      LEFT JOIN brands b
-      ON p.brand_id = b.id
-      ORDER BY p.id DESC`,
-      {
-        type: QueryTypes.SELECT,
-      }
-    );
+const products = await sequelize.query(
+  `SELECT
+    p.*,
+    c.name AS category_name,
+    b.name AS brand_name,
+
+    (
+      SELECT COALESCE(SUM(quantity), 0)
+      FROM inventories
+      WHERE inventories.product_id = p.id
+    ) AS qty
+
+  FROM products p
+
+  LEFT JOIN categories c
+    ON p.category_id = c.id
+
+  LEFT JOIN brands b
+    ON p.brand_id = b.id
+
+  ORDER BY p.id DESC`,
+  {
+    type: QueryTypes.SELECT,
+  }
+);
 
     res.json(products);
 
@@ -48,7 +58,6 @@ export const addProduct = async (req, res) => {
       brand_id,
       name,
       price,
-      qty,
       status,
     } = req.body;
 
@@ -63,18 +72,16 @@ export const addProduct = async (req, res) => {
         brand_id,
         name,
         price,
-        qty,
         image,
         status
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?)`,
       {
         replacements: [
           category_id,
           brand_id,
           name,
           price,
-          qty,
           image,
           status,
         ],
@@ -89,14 +96,14 @@ export const addProduct = async (req, res) => {
 
     console.log(error);
 
-    res.status(500).json({
-      msg: "Server Error",
-    });
+res.status(500).json({
+  msg: "Server Error",
+  error: error.message,
+});
 
   }
 
 };
-
 
 // UPDATE PRODUCT
 export const updateProduct = async (req, res) => {
