@@ -8,6 +8,9 @@ import categoryRoutes from "./routes/categoryRoutes.mjs";
 import productRoutes from "./routes/productRoutes.mjs";
 import brandRoutes from "./routes/brandRoutes.mjs";
 import inventoryRoutes from "./routes/inventoryRoutes.mjs";
+import userManagementRoutes from "./routes/userManagementRoutes.mjs";
+import eventRoutes from "./routes/eventRoutes.mjs";
+import eventCategoryRoutes from "./routes/eventCategoryRoutes.mjs";
 
 const app = express();
 
@@ -27,6 +30,17 @@ app.use("/category", categoryRoutes);
 app.use("/product", productRoutes);
 app.use("/brands", brandRoutes);
 app.use("/inventories", inventoryRoutes);
+app.use("/users", userManagementRoutes);
+app.use("/event", eventRoutes);
+app.use(
+  "/uploads",
+  express.static("public/uploads")
+);
+
+app.use(
+  "/event-category",
+  eventCategoryRoutes
+);
 
 
 app.get("/", (req, res) => {

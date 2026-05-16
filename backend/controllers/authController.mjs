@@ -169,8 +169,6 @@ export const login = async (req, res) => {
 
       role_id: user.role_id,
 
-      employee_id: user.employee_id,
-
     };
 
     // RESPONSE

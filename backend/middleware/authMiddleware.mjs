@@ -1,6 +1,4 @@
 
-
-
 // middleware/authMiddleware.mjs
 
 import jwt from "jsonwebtoken";
