@@ -47,6 +47,32 @@ const dynamicNavItems = [
     ],
   },
 
+    {
+    name: "User Management",
+    icon: <GridIcon />,
+    subItems: [
+          {
+            name: "Users",
+            path: "/user-management/users",
+          },
+        ],
+  },
+
+  {
+  name: "Event Management",
+  icon: <GridIcon />,
+  subItems: [
+    {
+      name: "Categories",
+      path: "/event-management/categories",
+    },
+    {
+      name: "Events",
+      path: "/event-management/events",
+    },
+  ],
+},
+
   ...(Array.isArray(modules) ? modules : []).map((m) => ({
     name: m.name,
     icon: <GridIcon />,
